@@ -1,25 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react'
+import Navbar from './components/Navbar'
+import News from "./components/News"
+import LoadingBar from 'react-top-loading-bar'
+export default class App extends Component {
+  apiKey = process.env.REACT_APP_API
+  constructor(){
+    super();
+    this.state ={
+      category: "General",
+      progress: 0
+    }
+  }
+  catUpdate=(element)=>{
+    console.log("called");
+    this.setState({category:element});
+  }
+  setProgress=(progress)=>{
+    this.setState({progress:progress})
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  render() {
+  
+    return (
+      
+      <>
+      <Navbar catUpdate={this.catUpdate}/>
+      <LoadingBar
+        color='#f11946'
+        height={3}
+        progress={this.state.progress}
+        onLoaderFinished={() => this.setProgress(0)}
+      />
+      <News setProgress={this.setProgress} category={this.state.category} apiKey={this.apiKey}/>
+      </>
+    )
+  }
 }
-
-export default App;
